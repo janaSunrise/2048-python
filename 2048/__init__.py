@@ -96,3 +96,48 @@ class Game(tk.Frame):
             fg=colors.CELL_NUMBER_COLORS[2],
             font=colors.CELL_NUMBER_FONTS[2],
         )
+
+    def add_new_tile(self):
+        """Add a new tile of 2 or 4 randomly."""
+        row = random.randint(0, 3)
+        col = random.randint(0, 3)
+        while(self.matrix[row][col] != 0):
+            row = random.randint(0, 3)
+            col = random.randint(0, 3)
+        self.matrix[row][col] = random.choice([2, 4])
+
+    # -- Matrix operations --
+    def reverse(self):
+        new_matrix = []
+        for i in range(4):
+            new_matrix.append([])
+            for j in range(4):
+                new_matrix[i].append(self.matrix[i][3 - j])
+        self.matrix = new_matrix
+
+    def transpose(self):
+        new_matrix = [[0] * 4 for _ in range(4)]
+
+        for i in range(4):
+            for j in range(4):
+                new_matrix[i][j] = self.matrix[j][i]
+
+        self.matrix = new_matrix
+
+    def combine(self):
+        for i in range(4):
+            for j in range(3):
+                if self.matrix[i][j] != 0 and self.matrix[i][j] == self.matrix[i][j + 1]:
+                    self.matrix[i][j] *= 2
+                    self.matrix[i][j + 1] = 0
+                    self.score += self.matrix[i][j]
+
+    def stack(self):
+        new_matrix = [[0] * 4 for _ in range(4)]
+        for i in range(4):
+            fill_position = 0
+            for j in range(4):
+                if self.matrix[i][j] != 0:
+                    new_matrix[i][fill_position] = self.matrix[i][j]
+                    fill_position += 1
+        self.matrix = new_matrix
