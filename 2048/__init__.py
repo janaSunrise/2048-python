@@ -8,6 +8,9 @@ class Game(tk.Frame):
     def __init__(self):
         super().__init__()
 
+        # Variables
+        self.score = 0
+
         self.grid()
 
         self.master.title("2048 Python")
@@ -47,6 +50,8 @@ class Game(tk.Frame):
 
                 row.append(cell_data)
 
+            self.cells.append(row)
+
         # -- Score section --
         score_frame = tk.Frame(self)
         score_frame.place(relx=0.5, y=40, anchor="center")
@@ -61,4 +66,33 @@ class Game(tk.Frame):
         self.score_label.grid(row=1)
 
     def start_game(self):
-        pass
+        # Generate empty matrix
+        self.matrix = [[0] * 4 for i in range(4)]
+
+        # Fill random cells with 2s
+        row = random.randint(0, 3)
+        col = random.randint(0, 3)
+
+        self.matrix[row][col] = 2
+
+        self.cells[row][col]["frame"].configure(bg=colors.CELL_COLORS[2])
+        self.cells[row][col]["number"].configure(
+            text="2",
+            bg=colors.CELL_COLORS[2],
+            fg=colors.CELL_NUMBER_COLORS[2],
+            font=colors.CELL_NUMBER_FONTS[2]
+        )
+
+        while self.matrix[row][col] != 0:
+            row = random.randint(0, 3)
+            col = random.randint(0, 3)
+
+        self.matrix[row][col] = 2
+
+        self.cells[row][col]["frame"].configure(bg=colors.CELL_COLORS[2])
+        self.cells[row][col]["number"].configure(
+            text="2",
+            bg=colors.CELL_COLORS[2],
+            fg=colors.CELL_NUMBER_COLORS[2],
+            font=colors.CELL_NUMBER_FONTS[2],
+        )
